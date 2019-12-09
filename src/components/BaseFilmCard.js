@@ -1,25 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 const HorizontalFilmsLIst = ({ posterUrl, name }) => (
   <View style={styles.container}>
     <FastImage source={{ uri: posterUrl }} style={styles.image}/>
-    <Text style={styles.name}>{ name }</Text>
+    <View style={styles.textContainer}>
+      <Text style={styles.name} numberOfLines={2}>{ name }</Text>
+    </View>
   </View>
 );
 
 const styles = StyleSheet.create({
+  //move to upper styles if will be reused
   container: {
-    backgroundColor: '#393939',
+    backgroundColor: '#2A2A2A',
     borderRadius: 4,
     marginRight: 10,
+    width: 130,
+
   },
   image: {
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
     height: 220,
-    width: 130,
+  },
+  textContainer: {
+    paddingVertical: 10,
+    paddingHorizontal: 8,
   },
   name: {
     color: 'white',

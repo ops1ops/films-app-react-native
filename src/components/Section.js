@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import React from 'react';
+import { View, StyleSheet, Text, Button } from 'react-native';
 
-const Section = ({ children }) => (
+const Section = ({ children, title }) => (
   <View style={styles.container}>
+    <Text style={styles.title}>{ title }</Text>
     { children }
   </View>
 );
@@ -11,8 +11,14 @@ const Section = ({ children }) => (
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#212121',
-    paddingHorizontal: 15,
-    paddingVertical: 30,
+    paddingVertical: 25,
+    marginBottom: 15,
+  },
+  title: {
+    color: 'white',
+    fontSize: 24,
+    marginBottom: 25,
+    marginLeft: 15,
   }
 });
 

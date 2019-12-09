@@ -7,10 +7,12 @@ export default () => (
 
 
 /*
+COLORS (will be needed when add themes):
 see all - #20A0DD
 container - #212121
 header - c
 tabs - #303030
+card bottom view - #2A2A2A
 
  */
 

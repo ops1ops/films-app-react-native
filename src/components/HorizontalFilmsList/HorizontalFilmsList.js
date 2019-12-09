@@ -12,6 +12,7 @@ const HorizontalFilmsLIst = ({ films }) => {
       data={films}
       renderItem={renderItem}
       keyExtractor={keyExtractor}
+      showsHorizontalScrollIndicator={false}
     />
   )
 };
