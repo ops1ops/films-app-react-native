@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Carousel from 'react-native-snap-carousel';
 import {View, Text, StyleSheet, Dimensions, ScrollView} from 'react-native';
-import CarouselItem from './CarouselItem';
+import FastImage from "react-native-fast-image";
 
-const FilmsCarousel = ({ films, navigation }) => {
-  const renderItem = ({ item }) => (
-    <CarouselItem item={item} onPress={() => navigation.navigate('FilmDetails', { id: item.id })} />
-  );
+const ImagesCarousel = ({ images }) => {
+  const renderItem = ({ item: { url } }) => <FastImage source={{ uri: url }} style={{ width: '100%', height: 220 }} />;
   const { width: viewportWidth } = Dimensions.get('window');
 
   return (
@@ -16,7 +14,7 @@ const FilmsCarousel = ({ films, navigation }) => {
         autoplay
         autoplayDelay={5000}
         autoplayInterval={5000}
-        data={films}
+        data={images}
         renderItem={renderItem}
         sliderWidth={viewportWidth}
         itemWidth={viewportWidth}
@@ -33,4 +31,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default FilmsCarousel;
+export default ImagesCarousel;

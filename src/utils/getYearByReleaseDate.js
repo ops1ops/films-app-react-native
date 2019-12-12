@@ -1,0 +1,1 @@
+export default (releaseDate) => new Date(releaseDate).getFullYear();

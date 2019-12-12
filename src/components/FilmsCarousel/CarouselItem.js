@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-const CarouselItem = ({ item: { posterUrl, backdropUrl, name, releaseDate } }) => {
+const CarouselItem = ({ item: { posterUrl, backdropUrl, name, releaseDate }, onPress }) => {
   const year = new Date(releaseDate).getFullYear();
 
   return (
@@ -10,7 +10,7 @@ const CarouselItem = ({ item: { posterUrl, backdropUrl, name, releaseDate } }) =
       <View style={styles.backdropContainer}>
         <FastImage source={{ uri: backdropUrl }} style={{ width: '100%', height: 220 }}/>
       </View>
-      <TouchableOpacity activeOpacity={0.8} style={styles.posterContainer}>
+      <TouchableOpacity activeOpacity={0.8} style={styles.posterContainer} onPress={onPress}>
         <FastImage source={{ uri: posterUrl }} style={styles.poster}/>
       </TouchableOpacity>
       <View style={styles.textContainer}>
