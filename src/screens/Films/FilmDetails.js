@@ -10,16 +10,19 @@ import HorizontalGenresList from "../../components/HorizontalGenresList/Horizont
 import getFilmDuration from "../../utils/getFilmDuration";
 import Section from "../../components/Section";
 import HorizontalFilmsList from "../../components/FilmsList/HorizontalFilmsList";
+import Loader from "../../components/Loader";
 
 const FilmDetails = ({ navigation }) => {
   const id = navigation.getParam('id', null);
   const [film, setFilm] = useState();
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    setFilmById(id, setFilm);
+    setLoading(true);
+    setFilmById(id, setFilm, setLoading);
   }, [id]);
 
-  if (!film) return <View style={styles.container} />;
+  if (!film || isLoading) return <Loader />;
 
   const { images, name, releaseDate, posterUrl, genres, description, duration, actors } = film;
   const year = new Date(releaseDate).getFullYear();

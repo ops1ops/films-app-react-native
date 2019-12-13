@@ -4,6 +4,7 @@ import {setAllFilms} from "../../api";
 import FilmsCarousel from "../../components/FilmsCarousel/FilmsCarousel";
 import HorizontalFilmsLIst from '../../components/FilmsList/HorizontalFilmsList';
 import Section from '../../components/Section';
+import Loader from "../../components/Loader";
 
 const FilmsOverview = ({ navigation }) => {
   const [films, setFilms] = useState();
@@ -12,7 +13,7 @@ const FilmsOverview = ({ navigation }) => {
     setAllFilms(setFilms);
   }, [])
 
-  if (!films) return <View style={styles.container} />;
+  if (!films) return <Loader/>;
 
   const sortedFilms = films.slice().sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate))
 

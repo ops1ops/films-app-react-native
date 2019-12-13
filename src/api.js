@@ -1,7 +1,7 @@
 import axios from 'axios';
 import withErrorLogs from "./utils/withErrorLogs";
 
-const localHost = '172.17.113.153:8000';
+const localHost = 'localhost:8000';
 const heroku = 'films-app-backend.herokuapp.com';
 let baseApiUrl = `http://${localHost}/api`;
 
@@ -17,10 +17,11 @@ export const setAllFilms = (setFilms) => withErrorLogs(async () => {
   }
 });
 
-export const setFilmById = (id, setFilm) => withErrorLogs(async () => {
+export const setFilmById = (id, setFilm, setLoading) => withErrorLogs(async () => {
   const { data } = await axios.get(`${baseApiUrl}/film/${id}`);
 
-  setFilm(data)
+  setFilm(data);
+  setLoading(false);
 });
 
 export const setFilmsByGenreId = (id, setFilm) => withErrorLogs(async () => {

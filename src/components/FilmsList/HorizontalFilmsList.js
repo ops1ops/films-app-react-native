@@ -2,7 +2,6 @@ import React from 'react';
 import { FlatList } from 'react-native';
 import VerticalFilmCard from "../VerticalFilmCard";
 import getYearByReleaseDate from "../../utils/getYearByReleaseDate";
-import {View} from "react-native-reanimated";
 
 const HorizontalFilmsLIst = ({ films, navigation, useAdditionalText, useAdditionalCharacter }) => {
   const renderItem = ({ item: { posterUrl, name, id, releaseDate = null, pivot = {} } }) => (

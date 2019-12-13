@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import {View, StyleSheet, ScrollView, Text} from 'react-native';
+import {View, StyleSheet, ScrollView, Text, SafeAreaView, ActivityIndicator} from 'react-native';
 import {setFilmsByGenreId} from "../api";
 import VerticalFilmsList from "../components/FilmsList/VerticalFilmsList";
+import Loader from "../components/Loader";
 
 const Genres = ({ navigation }) => {
   const id = navigation.getParam('id', null);
@@ -11,12 +12,12 @@ const Genres = ({ navigation }) => {
     setFilmsByGenreId(id, setFilms);
   }, [id]);
 
-  if (!films) return <View style={styles.container} />;
+  if (!films) return <Loader />;
 
   return (
-    <ScrollView style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <VerticalFilmsList films={films} navigation={navigation} />
-    </ScrollView>
+    </SafeAreaView>
   )
 };
 
