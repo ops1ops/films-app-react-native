@@ -3,16 +3,13 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import theme from "../theme";
 
-const renderAdditionalText = (additional) => additional && <Text style={styles.additional}>{ additional }</Text>;
-
-const VerticalFilmCard = ({ posterUrl, name, additionalText, onPress, firstItemStyles, additionalCharacter }) => (
+const VerticalActorCard = ({ posterUrl, name, onPress, firstItemStyles, character }) => (
   <View style={{...styles.container, ...firstItemStyles}}>
     <TouchableOpacity activeOpacity={theme.cardTouchOpacity} onPress={onPress}>
       <FastImage source={{ uri: posterUrl }} style={styles.image}/>
       <View style={styles.textContainer}>
         <Text style={styles.name} numberOfLines={2}>{ name }</Text>
-        { renderAdditionalText(additionalText) }
-        { renderAdditionalText(additionalCharacter) }
+        <Text style={styles.additional} numberOfLines={2}>{ character }</Text>
       </View>
     </TouchableOpacity>
   </View>
@@ -23,8 +20,9 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#2A2A2A',
     borderRadius: 4,
-    marginRight: 12,
+    marginRight: 10,
     width: 130,
+    height: '100%'
   },
   image: {
     borderTopLeftRadius: 4,
@@ -46,4 +44,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default VerticalFilmCard;
+export default VerticalActorCard;

@@ -1,5 +1,11 @@
+const screenBackground = '#191919';
+
 export default {
-  screenBackground: '#191919',
+  container: {
+    height: '100%',
+    backgroundColor: screenBackground,
+  },
+  screenBackground,
   sectionBackground: '#212121',
   cardTouchOpacity: 0.8,
   defaultTextSize: 15,

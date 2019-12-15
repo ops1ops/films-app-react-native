@@ -14,7 +14,7 @@ const FilmsCarousel = ({ films, navigation }) => {
       <Carousel
         loop
         autoplay
-        autoplayDelay={5000}
+        autoplayDelay={2000}
         autoplayInterval={5000}
         data={films}
         renderItem={renderItem}

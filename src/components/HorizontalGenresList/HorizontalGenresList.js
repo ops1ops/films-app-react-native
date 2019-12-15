@@ -6,7 +6,7 @@ const HorizontalGenresList = ({ genres, navigation }) => {
   const renderItem = ({ item: { name, id } }) => (
     <GenresButton name={name} onPress={() => navigation.navigate('Genres', { id, title: name })}/>
   );
-  const keyExtractor = (({ id }) => id);
+  const keyExtractor = (({ id }) => id.toString());
 
   return (
     <SafeAreaView style={{ height: 36 }}>

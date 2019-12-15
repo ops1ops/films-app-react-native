@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import {View, StyleSheet, ScrollView, Text} from 'react-native';
-import {setAllFilms, setFilmById} from "../../api";
-import FilmsCarousel from "../../components/FilmsCarousel/FilmsCarousel";
+import { View, StyleSheet, ScrollView, Text, TouchableOpacity, TouchableNativeFeedback, Modal } from 'react-native';
+import {setFilmById} from "../../api";
 import ImagesCarousel from "../../components/ImagesCarousel/ImagesCarousel";
 import theme from "../../theme";
-import LinearGradient from "react-native-linear-gradient";
 import FastImage from "react-native-fast-image";
 import HorizontalGenresList from "../../components/HorizontalGenresList/HorizontalGenresList";
 import getFilmDuration from "../../utils/getFilmDuration";
 import Section from "../../components/Section";
-import HorizontalFilmsList from "../../components/FilmsList/HorizontalFilmsList";
 import Loader from "../../components/Loader";
+import HorizontalList from "../../components/HorizontalList";
+import Icon from 'react-native-vector-icons/Ionicons';
+import RatingModal from '../../components/RatingModal';
 
 const FilmDetails = ({ navigation }) => {
   const id = navigation.getParam('id', null);
   const [film, setFilm] = useState();
+  const [isVisible, setVisible] = useState(false);
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -29,9 +30,10 @@ const FilmDetails = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
+      <RatingModal isVisible={isVisible} setVisible={setVisible} />
       <ImagesCarousel images={images} />
       <View style={styles.titleContainer}>
-        <Text style={styles.filmName}>{ name }</Text>
+        <Text style={styles.actorName}>{ name }</Text>
         <View style={{ flexDirection: 'row' }}>
           <Text style={styles.year}>{ year }</Text>
           <Text style={styles.duration}>{ getFilmDuration(duration) }</Text>
@@ -44,21 +46,52 @@ const FilmDetails = ({ navigation }) => {
           <Text style={styles.description} numberOfLines={5}>{ description }</Text>
         </View>
       </View>
+      <View style={styles.ratingContainer}>
+        <TouchableOpacity style={styles.vertical}>
+          <Icon name="ios-star" color="#f1c40f" size={35}/>
+          <Text style={styles.count}><Text style={{ fontWeight: 'bold', fontSize: 17 }}>5.6</Text>/10</Text>
+          <Text style={styles.total}>12 000</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.vertical} onPress={() => setVisible(true)}>
+          <Icon name="ios-star-outline" color="#fff" size={35}/>
+          <Text style={{ color: 'white', fontSize: 13, fontWeight: 'bold', marginTop: 2 }}>RATE THIS</Text>
+        </TouchableOpacity>
+      </View>
       <Section title="Actors">
-        <HorizontalFilmsList films={actors} useAdditionalCharacter />
+        <HorizontalList data={actors} navigation={navigation}/>
       </Section>
+
     </ScrollView>
   )
 };
 
 const styles = StyleSheet.create({
+  vertical: {
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  total: {
+    fontSize: 12,
+    color: 'gray'
+  },
+  count: {
+    fontSize: 15,
+    color: 'white'
+  },
+  ratingContainer: {
+    backgroundColor: theme.sectionBackground,
+    marginBottom: theme.sectionMarginBottom,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 15
+  },
   container: {
     backgroundColor: theme.screenBackground,
     height: '100%',
   },
   overviewContainer: {
     flexDirection: 'column',
-    width: '62%'
+    width: '63%'
   },
   titleContainer: {
     ...theme.bottomDivider,
@@ -69,7 +102,7 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     elevation: 5,
   },
-  filmName: {
+  actorName: {
     color: 'white',
     fontSize: 30,
   },
@@ -84,14 +117,14 @@ const styles = StyleSheet.create({
   },
   posterContainer: {
     width: '100%',
+    ...theme.bottomDivider,
     backgroundColor: theme.sectionBackground,
     padding: 15,
     flexDirection: 'row',
-    marginBottom: theme.sectionMarginBottom
   },
   poster: {
     marginRight: 15,
-    width: 120,
+    width: 110,
     height: 160
   },
   description: {
@@ -99,6 +132,9 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     color: 'white',
     fontSize: 14,
+  },
+  firstItemStyles: {
+    marginLeft: 15
   }
 });
 

@@ -1,19 +1,20 @@
 import React from 'react';
-import { FlatList } from 'react-native';
+import {FlatList, StyleSheet} from 'react-native';
 import VerticalFilmCard from "../VerticalFilmCard";
 import getYearByReleaseDate from "../../utils/getYearByReleaseDate";
 
-const HorizontalFilmsLIst = ({ films, navigation, useAdditionalText, useAdditionalCharacter }) => {
-  const renderItem = ({ item: { posterUrl, name, id, releaseDate = null, pivot = {} } }) => (
+const HorizontalFilmsList = ({ films, navigation, useAdditionalText, useAdditionalCharacter }) => {
+  const renderItem = ({ item: { posterUrl, name, id, releaseDate = null, pivot = {} }, index }) => (
     <VerticalFilmCard
       posterUrl={posterUrl}
       name={name}
-      onPress={() => !useAdditionalCharacter && navigation.navigate('FilmDetails', { id })}
+      onPress={() => navigation.navigate('FilmDetails', { id })}
       additionalText={useAdditionalText && getYearByReleaseDate(releaseDate)}
       additionalCharacter={useAdditionalCharacter && pivot.character}
+      firstItemStyles={index === 0 && styles.cardLeftMargin}
     />
   );
-  const keyExtractor = (({ id }) => id);
+  const keyExtractor = (({ id }) => id.toString());
 
   return (
     <FlatList
@@ -26,4 +27,10 @@ const HorizontalFilmsLIst = ({ films, navigation, useAdditionalText, useAddition
   )
 };
 
-export default HorizontalFilmsLIst;
+const styles = StyleSheet.create({
+  cardLeftMargin: {
+    marginLeft: 15,
+  }
+});
+
+export default HorizontalFilmsList;

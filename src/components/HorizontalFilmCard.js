@@ -9,7 +9,7 @@ const HorizontalFilmCard = ({ posterUrl, name, onPress, description, year, conta
       <FastImage source={{ uri: posterUrl }} style={styles.image}/>
       <View style={styles.textContainer}>
         <Text style={styles.name} numberOfLines={2}>{ `${name} (${year})` }</Text>
-        <Text style={styles.description} numberOfLines={2}>{ description }</Text>
+        <Text style={styles.description} numberOfLines={4}>{ description }</Text>
       </View>
     </View>
   </TouchableOpacity>
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     marginHorizontal: 7,
     paddingVertical: 10,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   image: {
     marginLeft: 8,
@@ -29,14 +29,20 @@ const styles = StyleSheet.create({
     height: 135,
   },
   textContainer: {
+    flex: 1,
     paddingVertical: 10,
     paddingHorizontal: 8,
   },
   name: {
     color: 'white',
-    fontSize: 15,
-    width: '100%',
+    fontSize: 16,
+    fontWeight: 'bold'
   },
+  description: {
+    marginTop: 7,
+    color: 'white',
+    fontSize: 14,
+  }
 });
 
 export default HorizontalFilmCard;
