@@ -1,30 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {Modal, StyleSheet, Text, TouchableNativeFeedback, View} from 'react-native';
 import {AirbnbRating} from "react-native-ratings";
+import Icon from 'react-native-vector-icons/Entypo';
 import theme from '../theme';
 
 export const RatingModal = ({ isVisible, setVisible }) => {
-  const [rating, setRating] = useState();
+  const [rating, setRating] = useState('');
+
+  const handleRate = useCallback(() => {
+    if (rating) {
+
+    }
+    setVisible(false);
+  }, []);
 
   return (
     <Modal visible={isVisible} animationType="fade" transparent>
       <View style={styles.modalContainer}>
         <View style={styles.modelContentContainer}>
-          <Text>{ rating }</Text>
+          <Text style={styles.rating}>{ rating }</Text>
           <AirbnbRating
-            style={{ height: 10 }}
             reviews={[]}
             onFinishRating={setRating}
             count={10}
-            defaultRating={0}
-            size={20}
+            defaultRating={rating}
+            size={23}
           />
+          <TouchableNativeFeedback onPress={handleRate} background={TouchableNativeFeedback.SelectableBackground()}>
+            <View style={styles.buttonContainer}>
+              <Text style={styles.buttonText}>Rate</Text>
+            </View>
+          </TouchableNativeFeedback>
           <TouchableNativeFeedback
             onPress={() => setVisible(false)}
             background={TouchableNativeFeedback.SelectableBackground()}
           >
-            <View style={styles.buttonContainer}>
-              <Text style={styles.buttonText}>Button</Text>
+            <View style={styles.crossContainer}>
+              <Icon name="cross" color="#fff" size={30}/>
             </View>
           </TouchableNativeFeedback>
         </View>
@@ -34,13 +46,24 @@ export const RatingModal = ({ isVisible, setVisible }) => {
 };
 
 const styles = StyleSheet.create({
+  rating: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 40
+  },
   modelContentContainer: {
     flex: 1,
     marginHorizontal: '10%',
     backgroundColor: theme.sectionBackground,
     borderRadius: 4,
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  crossContainer: {
+    position: 'absolute',
+    left: 10,
+    top: 10,
   },
   modalContainer: {
     flex: 1,
@@ -50,12 +73,14 @@ const styles = StyleSheet.create({
   buttonText: {
     padding: 10,
     color: 'white',
-    fontSize: 15,
+    fontSize: 17,
     textAlign: 'center',
   },
   buttonContainer: {
-    backgroundColor: theme.screenBackground,
-    width: 150,
+    backgroundColor: 'transparent',
+    borderColor: 'white',
+    borderWidth: 1,
+    width: 120,
     borderRadius: 4,
     marginTop: 30,
   }

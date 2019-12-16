@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, ScrollView, Text, TouchableOpacity, TouchableNativeFeedback, Modal } from 'react-native';
+import React, { useEffect, useState, useCallback, useContext } from 'react';
+import { View, StyleSheet, ScrollView, Text, TouchableOpacity } from 'react-native';
 import {setFilmById} from "../../api";
 import ImagesCarousel from "../../components/ImagesCarousel/ImagesCarousel";
 import theme from "../../theme";
@@ -11,17 +11,27 @@ import Loader from "../../components/Loader";
 import HorizontalList from "../../components/HorizontalList";
 import Icon from 'react-native-vector-icons/Ionicons';
 import RatingModal from '../../components/RatingModal';
+import { StoreContext } from '../../store';
 
 const FilmDetails = ({ navigation }) => {
   const id = navigation.getParam('id', null);
   const [film, setFilm] = useState();
   const [isVisible, setVisible] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [user] = useContext(StoreContext);
 
   useEffect(() => {
     setLoading(true);
     setFilmById(id, setFilm, setLoading);
   }, [id]);
+
+  const handleRatePress = useCallback(() => {
+    if (user) {
+      setVisible(true);
+    } else {
+      navigation.navigate('SignIn');
+    }
+  }, [user, navigation]);
 
   if (!film || isLoading) return <Loader />;
 
@@ -47,12 +57,12 @@ const FilmDetails = ({ navigation }) => {
         </View>
       </View>
       <View style={styles.ratingContainer}>
-        <TouchableOpacity style={styles.vertical}>
+        <TouchableOpacity style={styles.vertical} activeOpacity={1}>
           <Icon name="ios-star" color="#f1c40f" size={35}/>
           <Text style={styles.count}><Text style={{ fontWeight: 'bold', fontSize: 17 }}>5.6</Text>/10</Text>
           <Text style={styles.total}>12 000</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.vertical} onPress={() => setVisible(true)}>
+        <TouchableOpacity style={styles.vertical} onPress={handleRatePress}>
           <Icon name="ios-star-outline" color="#fff" size={35}/>
           <Text style={{ color: 'white', fontSize: 13, fontWeight: 'bold', marginTop: 2 }}>RATE THIS</Text>
         </TouchableOpacity>
