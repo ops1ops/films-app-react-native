@@ -10,6 +10,8 @@ import formatActorByGender from "../../utils/formatActorByGender";
 import HorizontalList from "../../components/HorizontalList";
 import VerticalActorCard from "../../components/VerticalActorCard";
 import ImagesList from "../../components/ImagesList";
+import NumberedText from '../../components/NumberedText';
+import formatDate from '../../utils/formatDate';
 
 const ActorDetails = ({ navigation }) => {
   const id = navigation.getParam('id', null);
@@ -39,8 +41,8 @@ const ActorDetails = ({ navigation }) => {
       <View style={styles.posterContainer}>
         <FastImage source={{ uri: posterUrl }} style={styles.poster}/>
         <View style={styles.overviewContainer}>
-          <Text style={styles.description} numberOfLines={6}>{ biography }</Text>
-          <Text style={styles.description}>{ `Born: ${new Date(bornDate).toISOString()}` }</Text>
+          <NumberedText style={styles.description} numberOfLines={6}>{ biography }</NumberedText>
+          <Text style={styles.description}>{ `Born: ${formatDate(bornDate)}` }</Text>
         </View>
       </View>
       <Section title="Filmography">

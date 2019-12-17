@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import theme from "../theme";
+import NumberedText from './NumberedText';
 
 const HorizontalFilmCard = ({ posterUrl, name, onPress, description, year, containerStyles }) => (
   <TouchableOpacity activeOpacity={theme.cardTouchOpacity} onPress={onPress}>
@@ -9,7 +10,7 @@ const HorizontalFilmCard = ({ posterUrl, name, onPress, description, year, conta
       <FastImage source={{ uri: posterUrl }} style={styles.image}/>
       <View style={styles.textContainer}>
         <Text style={styles.name} numberOfLines={2}>{ `${name} (${year})` }</Text>
-        <Text style={styles.description} numberOfLines={4}>{ description }</Text>
+        <NumberedText style={styles.description} numberOfLines={4}>{ description }</NumberedText>
       </View>
     </View>
   </TouchableOpacity>

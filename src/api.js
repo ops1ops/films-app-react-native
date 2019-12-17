@@ -43,12 +43,23 @@ export const setActorById = (id, setActor, setLoading) => withErrorLogs(async ()
 
 export const signIn = async (setLoading, setUser, credentials) => {
   try {
-    const {data} = await axios.post(`${baseApiUrl}/signin`, {credentials});
-    console.log(data)
+    const { data } = await axios.post(`${baseApiUrl}/signin`, {credentials});
     setUser(data);
   } catch (e) {
-    console.log(e)
   } finally {
     setLoading(false);
   }
+};
+
+export const setCinematographWithRequest = async (type, setCinematograph) => {
+  const endpoint = type === 'TV' ? 'tvs' : 'films';
+  const { data } = await axios.get(`${baseApiUrl}/${endpoint}`);
+
+  setCinematograph(data);
+};
+
+export const rateCinematograph = async (id, rating) => {
+  const { data } = await axios.post(`${baseApiUrl}/film/${id}/rating`, { rating });
+
+  console.log(data);
 };

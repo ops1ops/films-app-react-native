@@ -4,7 +4,7 @@ import {setFilmsByGenreId} from "../api";
 import VerticalFilmsList from "../components/FilmsList/VerticalFilmsList";
 import Loader from "../components/Loader";
 
-const Genres = ({ navigation }) => {
+const Genre = ({ navigation }) => {
   const id = navigation.getParam('id', null);
   const [films, setFilms] = useState();
 
@@ -28,4 +28,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Genres;
+export default Genre;

@@ -1,9 +1,12 @@
 import React from 'react';
-import { View, StyleSheet, Text, Button } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 
-const Section = ({ children, title }) => (
+const Section = ({ children, title, onSeeAllPress }) => (
   <View style={styles.container}>
-    <Text style={styles.title}>{ title }</Text>
+    <View style={styles.topContainer}>
+      <Text style={styles.title}>{ title }</Text>
+      { onSeeAllPress && <Text style={styles.seeAll} onPress={onSeeAllPress}>See all</Text> }
+    </View>
     { children }
   </View>
 );
@@ -14,11 +17,23 @@ const styles = StyleSheet.create({
     paddingVertical: 25,
     marginBottom: 15,
   },
+  topContainer: {
+    marginHorizontal: 15,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 25,
+
+  },
+  seeAll: {
+    color: '#20A0DD',
+    textTransform: 'uppercase',
+    fontSize: 15,
+    paddingTop: 7
+  },
   title: {
     color: 'white',
     fontSize: 24,
-    marginBottom: 25,
-    marginLeft: 15,
   }
 });
 

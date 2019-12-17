@@ -1,21 +1,21 @@
 import React, { useState, useCallback } from 'react';
-import {Modal, StyleSheet, Text, TouchableNativeFeedback, View} from 'react-native';
-import {AirbnbRating} from "react-native-ratings";
+import { Modal, StyleSheet, Text, TouchableNativeFeedback, View } from 'react-native';
+import { AirbnbRating } from 'react-native-ratings';
 import Icon from 'react-native-vector-icons/Entypo';
 import theme from '../theme';
+import { rateCinematograph } from '../api';
 
-export const RatingModal = ({ isVisible, setVisible }) => {
+export const RatingModal = ({ isVisible, setVisible, filmId }) => {
   const [rating, setRating] = useState('');
 
   const handleRate = useCallback(() => {
     if (rating) {
-
+      rateCinematograph(filmId, rating);
+      setVisible(false);
     }
-    setVisible(false);
-  }, []);
+  }, [filmId, rating]);
 
   const handleClose = useCallback(() => {
-
     setVisible(false);
   }, []);
 
@@ -23,7 +23,7 @@ export const RatingModal = ({ isVisible, setVisible }) => {
     <Modal visible={isVisible} animationType="fade" transparent>
       <View style={styles.modalContainer}>
         <View style={styles.modelContentContainer}>
-          <Text style={styles.rating}>{ rating }</Text>
+          <Text style={styles.rating}>{rating ? rating : <Text style={{ fontSize: 25 }}>No Rate yet</Text>}</Text>
           <AirbnbRating
             reviews={[]}
             onFinishRating={setRating}
@@ -41,7 +41,7 @@ export const RatingModal = ({ isVisible, setVisible }) => {
             background={TouchableNativeFeedback.SelectableBackground()}
           >
             <View style={styles.crossContainer}>
-              <Icon name="cross" color="#fff" size={30}/>
+              <Icon name="cross" color="#fff" size={30} />
             </View>
           </TouchableNativeFeedback>
         </View>
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   rating: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 40
+    fontSize: 40,
   },
   modelContentContainer: {
     flex: 1,
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   crossContainer: {
     position: 'absolute',
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     paddingVertical: '30%',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   buttonText: {
     padding: 10,
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     width: 120,
     borderRadius: 4,
     marginTop: 30,
-  }
+  },
 });
 
 export default RatingModal;

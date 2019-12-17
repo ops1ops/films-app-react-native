@@ -12,6 +12,8 @@ import HorizontalList from "../../components/HorizontalList";
 import Icon from 'react-native-vector-icons/Ionicons';
 import RatingModal from '../../components/RatingModal';
 import { StoreContext } from '../../store';
+import getFormattedType from '../../utils/getFormattedType';
+import NumberedText from '../../components/NumberedText';
 
 const FilmDetails = ({ navigation }) => {
   const id = navigation.getParam('id', null);
@@ -40,25 +42,26 @@ const FilmDetails = ({ navigation }) => {
 
   if (!film || isLoading) return <Loader />;
 
-  const { images, name, releaseDate, posterUrl, genres, description, duration, actors } = film;
+  const { images, name, releaseDate, posterUrl, genres, description, duration, actors, type } = film;
   const year = new Date(releaseDate).getFullYear();
 
   return (
     <ScrollView style={styles.container}>
-      <RatingModal isVisible={isVisible} setVisible={setVisible} />
+      <RatingModal isVisible={isVisible} setVisible={setVisible} filmId={id}/>
       <ImagesCarousel images={images} />
       <View style={styles.titleContainer}>
         <Text style={styles.actorName}>{ name }</Text>
         <View style={{ flexDirection: 'row' }}>
+          <Text style={styles.grayText}>{ getFormattedType(type) }</Text>
           <Text style={styles.year}>{ year }</Text>
-          <Text style={styles.duration}>{ getFilmDuration(duration) }</Text>
+          <Text style={styles.grayText}>{ getFilmDuration(duration) }</Text>
         </View>
       </View>
       <View style={styles.posterContainer}>
         <FastImage source={{ uri: posterUrl }} style={styles.poster}/>
         <View style={styles.overviewContainer}>
           <HorizontalGenresList genres={genres} navigation={navigation}/>
-          <Text style={styles.description} numberOfLines={5}>{ description }</Text>
+          <NumberedText style={styles.description} numberOfLines={5}>{ description }</NumberedText>
         </View>
       </View>
       <View style={styles.ratingContainer}>
@@ -75,7 +78,6 @@ const FilmDetails = ({ navigation }) => {
       <Section title="Actors">
         <HorizontalList data={actors} navigation={navigation}/>
       </Section>
-
     </ScrollView>
   )
 };
@@ -121,14 +123,14 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 30,
   },
-  year: {
+  grayText: {
     color: 'gray',
     fontSize: 14,
   },
-  duration: {
+  year: {
     color: 'gray',
     fontSize: 14,
-    marginLeft: 8
+    marginHorizontal: 8,
   },
   posterContainer: {
     width: '100%',

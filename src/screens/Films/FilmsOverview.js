@@ -18,11 +18,11 @@ const FilmsOverview = ({ navigation }) => {
   const handleRefresh = () => {
     setAllCinematograph(setFilms, setTvs);
     console.log(1)
-  }
+  };
 
   if (!films) return <Loader/>;
 
-  const sortedByDateFilms = films.slice().sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate))
+  const sortedByDateFilms = films.slice().sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate));
 
   return (
     <ScrollView
@@ -30,10 +30,10 @@ const FilmsOverview = ({ navigation }) => {
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh}/>}
     >
       <FilmsCarousel films={films} navigation={navigation} />
-      <Section title="Films Overview">
+      <Section title="Films Overview" onSeeAllPress={() => navigation.navigate('All', { type: 'film' })}>
         <HorizontalFilmsList films={films} navigation={navigation} navigateTo="FilmDetails" />
       </Section>
-      <Section title="TV's Overview">
+      <Section title="TV's Overview" onSeeAllPress={() => navigation.navigate('All', { type: 'TV' })}>
         <HorizontalFilmsList films={tvs} navigation={navigation} navigateTo="FilmDetails" />
       </Section>
       <Section title="Last Released Films">
