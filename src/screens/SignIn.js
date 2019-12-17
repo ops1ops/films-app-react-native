@@ -16,6 +16,7 @@ const SignIn = ({ navigation }) => {
   const handlePress = useCallback(async () => {
     setLoading(true);
     signIn(setLoading, setUser, { email, password });
+    navigation.getParam('successLogin', () => {});
   }, [email, password]);
 
   if (user && user.token) {
@@ -25,14 +26,20 @@ const SignIn = ({ navigation }) => {
   return (
     <ScrollView style={{ ...theme.container, ...styles.container }} contentContainerStyle={{ alignItems: 'center' }}>
       <Input style={styles.input} placeholder="Email" value={email} onChangeText={setEmail} />
-      <Input style={styles.input} placeholder="Password" value={password} onChangeText={setPassword} />
+      <Input
+        style={styles.input}
+        placeholder="Password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry={true}
+        autoCapitalize='none'
+      />
       { isLoading && <Loader />}
       <Button
         style={styles.signIn}
         title="Sign In"
         onPress={handlePress}
       />
-      <Text>{email + password}</Text>
     </ScrollView>
   );
 };

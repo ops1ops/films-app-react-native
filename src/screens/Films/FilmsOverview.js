@@ -1,25 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import {StyleSheet, ScrollView} from 'react-native';
+import {ScrollView, RefreshControl, StyleSheet} from 'react-native';
 import {setAllCinematograph} from "../../api";
-import FilmsCarousel from "../../components/FilmsCarousel/FilmsCarousel";
-import HorizontalFilmsList from '../../components/FilmsList/HorizontalFilmsList';
-import Section from '../../components/Section';
 import Loader from "../../components/Loader";
+import FilmsCarousel from '../../components/FilmsCarousel/FilmsCarousel';
+import Section from '../../components/Section';
+import HorizontalFilmsList from '../../components/FilmsList/HorizontalFilmsList';
 
 const FilmsOverview = ({ navigation }) => {
   const [films, setFilms] = useState();
   const [tvs, setTvs] = useState();
+  const [isRefreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     setAllCinematograph(setFilms, setTvs);
   }, []);
 
+  const handleRefresh = () => {
+    setAllCinematograph(setFilms, setTvs);
+    console.log(1)
+  }
+
   if (!films) return <Loader/>;
 
-  const sortedFilms = films.slice().sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate))
+  const sortedByDateFilms = films.slice().sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate))
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh}/>}
+    >
       <FilmsCarousel films={films} navigation={navigation} />
       <Section title="Films Overview">
         <HorizontalFilmsList films={films} navigation={navigation} navigateTo="FilmDetails" />
@@ -28,7 +37,7 @@ const FilmsOverview = ({ navigation }) => {
         <HorizontalFilmsList films={tvs} navigation={navigation} navigateTo="FilmDetails" />
       </Section>
       <Section title="Last Released Films">
-        <HorizontalFilmsList films={sortedFilms} navigation={navigation} useAdditionalText navigateTo="FilmDetails" />
+        <HorizontalFilmsList films={sortedByDateFilms} navigation={navigation} useAdditionalText navigateTo="FilmDetails" />
       </Section>
     </ScrollView>
   )

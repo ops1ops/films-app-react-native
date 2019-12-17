@@ -29,7 +29,12 @@ const FilmDetails = ({ navigation }) => {
     if (user) {
       setVisible(true);
     } else {
-      navigation.navigate('SignIn');
+      navigation.navigate('SignIn', {
+        successLogin: () => {
+
+          console.log(1111111111111111)
+        },
+      });
     }
   }, [user, navigation]);
 
