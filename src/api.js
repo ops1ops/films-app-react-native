@@ -58,8 +58,18 @@ export const setCinematographWithRequest = async (type, setCinematograph) => {
   setCinematograph(data);
 };
 
-export const rateCinematograph = async (id, rating) => {
-  const { data } = await axios.post(`${baseApiUrl}/film/${id}/rating`, { rating });
-
-  console.log(data);
+export const rateCinematograph = async (id, rating, setLoading, setVisible, setUserRating) => {
+  try {
+    setLoading(true);
+    const { data } = await axios.post(`${baseApiUrl}/film/${id}/rating`, { rating });
+    console.log(data);
+    if (data) {
+      setUserRating(data);
+    }
+    setVisible(false);
+  } catch (error) {
+    console.log("ERROR", error);
+  } finally {
+    setLoading(false);
+  }
 };

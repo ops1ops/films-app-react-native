@@ -1,19 +1,19 @@
 import React, { useState, useCallback } from 'react';
-import { Modal, StyleSheet, Text, TouchableNativeFeedback, View } from 'react-native';
+import { ActivityIndicator, Modal, StyleSheet, Text, TouchableNativeFeedback, View } from 'react-native';
 import { AirbnbRating } from 'react-native-ratings';
 import Icon from 'react-native-vector-icons/Entypo';
 import theme from '../theme';
 import { rateCinematograph } from '../api';
 
-export const RatingModal = ({ isVisible, setVisible, filmId }) => {
+export const RatingModal = ({ isVisible, setVisible, filmId, setUserRating }) => {
   const [rating, setRating] = useState('');
+  const [isLoading, setLoading] = useState(false);
 
   const handleRate = useCallback(() => {
     if (rating) {
-      rateCinematograph(filmId, rating);
-      setVisible(false);
+      rateCinematograph(filmId, rating, setLoading, setVisible, setUserRating);
     }
-  }, [filmId, rating]);
+  }, [filmId, rating, setUserRating, setVisible]);
 
   const handleClose = useCallback(() => {
     setVisible(false);
@@ -32,9 +32,12 @@ export const RatingModal = ({ isVisible, setVisible, filmId }) => {
             size={23}
           />
           <TouchableNativeFeedback onPress={handleRate} background={TouchableNativeFeedback.SelectableBackground()}>
-            <View style={styles.buttonContainer}>
-              <Text style={styles.buttonText}>Rate</Text>
-            </View>
+            {
+              isLoading ? <ActivityIndicator size="large" color="#fff" style={{ marginTop: 10 }}/>
+              : <View style={styles.buttonContainer}>
+                  <Text style={styles.buttonText}>Rate</Text>
+                </View>
+            }
           </TouchableNativeFeedback>
           <TouchableNativeFeedback
             onPress={handleClose}

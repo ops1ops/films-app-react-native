@@ -14,12 +14,14 @@ import RatingModal from '../../components/RatingModal';
 import { StoreContext } from '../../store';
 import getFormattedType from '../../utils/getFormattedType';
 import NumberedText from '../../components/NumberedText';
+import RatingText from '../../components/RatingText';
 
 const FilmDetails = ({ navigation }) => {
   const id = navigation.getParam('id', null);
   const [film, setFilm] = useState();
   const [isVisible, setVisible] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [userRating, setUserRating] = useState();
   const [user] = useContext(StoreContext);
 
   useEffect(() => {
@@ -47,7 +49,7 @@ const FilmDetails = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <RatingModal isVisible={isVisible} setVisible={setVisible} filmId={id}/>
+      <RatingModal isVisible={isVisible} setVisible={setVisible} filmId={id} setUserRating={setUserRating}/>
       <ImagesCarousel images={images} />
       <View style={styles.titleContainer}>
         <Text style={styles.actorName}>{ name }</Text>
@@ -67,12 +69,12 @@ const FilmDetails = ({ navigation }) => {
       <View style={styles.ratingContainer}>
         <TouchableOpacity style={styles.vertical} activeOpacity={1}>
           <Icon name="ios-star" color="#f1c40f" size={35}/>
-          <Text style={styles.count}><Text style={{ fontWeight: 'bold', fontSize: 17 }}>5.6</Text>/10</Text>
+          <RatingText rating={5.5} />
           <Text style={styles.total}>12 000</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.vertical} onPress={handleRatePress}>
           <Icon name="ios-star-outline" color="#fff" size={35}/>
-          <Text style={{ color: 'white', fontSize: 13, fontWeight: 'bold', marginTop: 2 }}>RATE THIS</Text>
+          <Text style={styles.rateThis}>RATE THIS { userRating.rating }</Text>
         </TouchableOpacity>
       </View>
       <Section title="Actors">
@@ -83,6 +85,12 @@ const FilmDetails = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  rateThis: {
+    color: 'white',
+    fontSize: 13,
+    fontWeight: 'bold',
+    marginTop: 2
+  },
   vertical: {
     flexDirection: 'column',
     alignItems: 'center',
@@ -90,10 +98,6 @@ const styles = StyleSheet.create({
   total: {
     fontSize: 12,
     color: 'gray'
-  },
-  count: {
-    fontSize: 15,
-    color: 'white'
   },
   ratingContainer: {
     backgroundColor: theme.sectionBackground,

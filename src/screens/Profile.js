@@ -11,9 +11,16 @@ function Profile({ navigation }) {
     navigation.goBack();
   };
 
+  if (!user) return null;
+
+  const { token, name, id, email } = user;
+
   return (
     <ScrollView style={theme.container}>
-      <Text>13</Text>
+      <Text>{token}</Text>
+      <Text>{name}</Text>
+      <Text>{id}</Text>
+      <Text>{email}</Text>
       <Button title="Log out" onPress={handlePress}/>
     </ScrollView>
   );
