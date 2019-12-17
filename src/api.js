@@ -1,19 +1,23 @@
 import axios from 'axios';
 import withErrorLogs from "./utils/withErrorLogs";
 
-const localHost = '172.20.10.8:8000';
+const localHost = 'localhost:8000';
 const heroku = 'films-app-backend.herokuapp.com';
 let baseApiUrl = `http://${localHost}/api`;
 
-export const setAllFilms = (setFilms) => withErrorLogs(async () => {
-  let response;
+export const setAllCinematograph = (setFilms, setTvs) => withErrorLogs(async () => {
+  let films;
+  let tvs;
   try {
-    response = await axios.get(`${baseApiUrl}/films`);
+    films = await axios.get(`${baseApiUrl}/films`);
+    tvs = await axios.get(`${baseApiUrl}/tvs`);
   } catch {
     baseApiUrl = `http://${heroku}/api`;
-    response = await axios.get(`${baseApiUrl}/films`);
+    films = await axios.get(`${baseApiUrl}/films`);
+    tvs = await axios.get(`${baseApiUrl}/tvs`)
   } finally {
-    setFilms(response.data.slice(5, 15))
+    setTvs(tvs.data.sort(() => 0.5 - Math.random()).slice(5, 15));
+    setFilms(films.data.sort(() => 0.5 - Math.random()).slice(5, 15));
   }
 });
 

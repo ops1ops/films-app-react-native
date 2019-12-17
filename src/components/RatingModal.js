@@ -14,6 +14,11 @@ export const RatingModal = ({ isVisible, setVisible }) => {
     setVisible(false);
   }, []);
 
+  const handleClose = useCallback(() => {
+
+    setVisible(false);
+  }, []);
+
   return (
     <Modal visible={isVisible} animationType="fade" transparent>
       <View style={styles.modalContainer}>
@@ -32,7 +37,7 @@ export const RatingModal = ({ isVisible, setVisible }) => {
             </View>
           </TouchableNativeFeedback>
           <TouchableNativeFeedback
-            onPress={() => setVisible(false)}
+            onPress={handleClose}
             background={TouchableNativeFeedback.SelectableBackground()}
           >
             <View style={styles.crossContainer}>

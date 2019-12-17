@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {View, StyleSheet, ScrollView} from 'react-native';
-import {setAllFilms} from "../../api";
+import {StyleSheet, ScrollView} from 'react-native';
+import {setAllCinematograph} from "../../api";
 import FilmsCarousel from "../../components/FilmsCarousel/FilmsCarousel";
 import HorizontalFilmsList from '../../components/FilmsList/HorizontalFilmsList';
 import Section from '../../components/Section';
@@ -8,10 +8,11 @@ import Loader from "../../components/Loader";
 
 const FilmsOverview = ({ navigation }) => {
   const [films, setFilms] = useState();
+  const [tvs, setTvs] = useState();
 
   useEffect(() => {
-    setAllFilms(setFilms);
-  }, [])
+    setAllCinematograph(setFilms, setTvs);
+  }, []);
 
   if (!films) return <Loader/>;
 
@@ -22,6 +23,9 @@ const FilmsOverview = ({ navigation }) => {
       <FilmsCarousel films={films} navigation={navigation} />
       <Section title="Films Overview">
         <HorizontalFilmsList films={films} navigation={navigation} navigateTo="FilmDetails" />
+      </Section>
+      <Section title="TV's Overview">
+        <HorizontalFilmsList films={tvs} navigation={navigation} navigateTo="FilmDetails" />
       </Section>
       <Section title="Last Released Films">
         <HorizontalFilmsList films={sortedFilms} navigation={navigation} useAdditionalText navigateTo="FilmDetails" />
