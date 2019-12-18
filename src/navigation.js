@@ -6,7 +6,7 @@ import FilmDetails from "./screens/Films/FilmDetails";
 import Genre from "./screens/Genre";
 import ActorDetails from "./screens/Actors/ActorDetails";
 
-import Profile from "./screens/Profile";
+import Profile from "./screens/Profile/Profile";
 import UserProfileIcon from "./components/UserProfileIcon";
 import SignIn from "./screens/SignIn";
 import HeaderTitle from './components/HeaderTitle';

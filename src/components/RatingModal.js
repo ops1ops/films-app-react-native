@@ -5,13 +5,13 @@ import Icon from 'react-native-vector-icons/Entypo';
 import theme from '../theme';
 import { rateCinematograph } from '../api';
 
-export const RatingModal = ({ isVisible, setVisible, filmId, setUserRating }) => {
-  const [rating, setRating] = useState('');
+export const RatingModal = ({ isVisible, setVisible, filmId, setUserRating, startRating, setTotalInfo }) => {
+  const [rating, setRating] = useState(startRating);
   const [isLoading, setLoading] = useState(false);
 
   const handleRate = useCallback(() => {
     if (rating) {
-      rateCinematograph(filmId, rating, setLoading, setVisible, setUserRating);
+      rateCinematograph(filmId, rating, setLoading, setVisible, setUserRating, setTotalInfo);
     }
   }, [filmId, rating, setUserRating, setVisible]);
 

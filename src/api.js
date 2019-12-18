@@ -1,7 +1,8 @@
 import axios from 'axios';
 import withErrorLogs from "./utils/withErrorLogs";
+import reformattedRatedBy from "./utils/reformattedRatedBy";
 
-const localHost = 'localhost:8000';
+const localHost = '192.168.0.104:8000';
 const heroku = 'films-app-backend.herokuapp.com';
 let baseApiUrl = `http://${localHost}/api`;
 
@@ -21,10 +22,14 @@ export const setAllCinematograph = (setFilms, setTvs) => withErrorLogs(async () 
   }
 });
 
-export const setFilmById = (id, setFilm, setLoading) => withErrorLogs(async () => {
-  const { data } = await axios.get(`${baseApiUrl}/film/${id}`);
-
+export const setFilmById = (id, user, setFilm, setLoading, setTotalInfo, setUserRating, setInWatchlist) => withErrorLogs(async () => {
+  const userId = user && user.id;
+  const { data } = await axios.get(`${baseApiUrl}/film/${id}?userId=${userId}`);
+  const watchlist = data.data.toWatchedBy.find(({ id }) => id === userId);
   setFilm(data);
+  setTotalInfo(data.ratingInfo);
+  setUserRating(reformattedRatedBy(data.data.ratedBy, user));
+  setInWatchlist(!!watchlist);
   setLoading(false);
 });
 
@@ -58,13 +63,14 @@ export const setCinematographWithRequest = async (type, setCinematograph) => {
   setCinematograph(data);
 };
 
-export const rateCinematograph = async (id, rating, setLoading, setVisible, setUserRating) => {
+export const rateCinematograph = async (id, rating, setLoading, setVisible, setUserRating, setTotalInfo) => {
   try {
     setLoading(true);
-    const { data } = await axios.post(`${baseApiUrl}/film/${id}/rating`, { rating });
-    console.log(data);
-    if (data) {
-      setUserRating(data);
+    const { data: { rating: confirmedRating, ratingInfo } } = await axios.post(`${baseApiUrl}/film/${id}/rating`, { rating });
+
+    if (confirmedRating) {
+      setUserRating(confirmedRating);
+      setTotalInfo(ratingInfo);
     }
     setVisible(false);
   } catch (error) {
@@ -72,4 +78,20 @@ export const rateCinematograph = async (id, rating, setLoading, setVisible, setU
   } finally {
     setLoading(false);
   }
+};
+
+export const setUserInfoFromRequest = async (id, setUserInfo, setLoading) => {
+  const { data } = await axios.get(`${baseApiUrl}/user/${id}`);
+
+  console.log(data);
+  setUserInfo(data);
+  setLoading(false);
+};
+
+export const addToWatchList = async (id) => {
+  await axios.put(`${baseApiUrl}/film/${id}/watchlist`);
+};
+
+export const deleteFromWatchList = async (id) => {
+  await axios.delete(`${baseApiUrl}/film/${id}/watchlist`);
 };

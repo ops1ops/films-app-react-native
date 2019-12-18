@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useContext } from 'react';
 import { View, StyleSheet, ScrollView, Text, TouchableOpacity } from 'react-native';
-import {setFilmById} from "../../api";
+import {addToWatchList, deleteFromWatchList, setFilmById} from "../../api";
 import ImagesCarousel from "../../components/ImagesCarousel/ImagesCarousel";
 import theme from "../../theme";
 import FastImage from "react-native-fast-image";
@@ -15,6 +15,10 @@ import { StoreContext } from '../../store';
 import getFormattedType from '../../utils/getFormattedType';
 import NumberedText from '../../components/NumberedText';
 import RatingText from '../../components/RatingText';
+import reformatRatedBy from "../../utils/reformattedRatedBy";
+import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import axios from 'axios';
 
 const FilmDetails = ({ navigation }) => {
   const id = navigation.getParam('id', null);
@@ -22,12 +26,31 @@ const FilmDetails = ({ navigation }) => {
   const [isVisible, setVisible] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [userRating, setUserRating] = useState();
+  const [totalInfo, setTotalInfo] = useState();
+  const [isInWatchlist, setInWatchlist] = useState(false);
   const [user] = useContext(StoreContext);
 
   useEffect(() => {
     setLoading(true);
-    setFilmById(id, setFilm, setLoading);
+    setFilmById(id, user, setFilm, setLoading, setTotalInfo, setUserRating, setInWatchlist);
   }, [id]);
+
+  const handleWatchlist = useCallback(async () => {
+    try {
+      console.log(isInWatchlist)
+      if (isInWatchlist) {
+        await deleteFromWatchList(id);
+      } else {
+        await addToWatchList(id);
+      }
+    } catch (e) {
+      console.log(e)
+    } finally {
+      if (user) {
+        setInWatchlist(!isInWatchlist);
+      }
+    }
+  }, [isInWatchlist, id, setInWatchlist, user]);
 
   const handleRatePress = useCallback(() => {
     if (user) {
@@ -44,12 +67,25 @@ const FilmDetails = ({ navigation }) => {
 
   if (!film || isLoading) return <Loader />;
 
-  const { images, name, releaseDate, posterUrl, genres, description, duration, actors, type } = film;
-  const year = new Date(releaseDate).getFullYear();
+  const {
+    data: { images, name, releaseDate, posterUrl, genres, description, duration, actors, type, ratedBy },
+  } = film;
+  const { count, average } = totalInfo;
 
+  const year = new Date(releaseDate).getFullYear();
+  const newRatedBy = reformatRatedBy(ratedBy, user);
+  console.log("INFO", totalInfo)
   return (
     <ScrollView style={styles.container}>
-      <RatingModal isVisible={isVisible} setVisible={setVisible} filmId={id} setUserRating={setUserRating}/>
+      <RatingModal
+        startRating={userRating}
+        isVisible={isVisible}
+        setVisible={setVisible}
+        filmId={id}
+        setFilm={setFilm}
+        setTotalInfo={setTotalInfo}
+        setUserRating={setUserRating}
+      />
       <ImagesCarousel images={images} />
       <View style={styles.titleContainer}>
         <Text style={styles.actorName}>{ name }</Text>
@@ -66,15 +102,35 @@ const FilmDetails = ({ navigation }) => {
           <NumberedText style={styles.description} numberOfLines={5}>{ description }</NumberedText>
         </View>
       </View>
+      <View style={styles.watchListButtonContainer}>
+        <TouchableOpacity style={styles.watchListButton} onPress={handleWatchlist}>
+          { !isInWatchlist ? <Entypo name="plus" color="#fff" size={25}/> : <MaterialIcons name="done" color="#fff" size={25}/> }
+          <Text style={styles.watchListText}>{ !isInWatchlist ? 'Add to Watchlist' : 'Added to Watchlist' }</Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.ratingContainer}>
         <TouchableOpacity style={styles.vertical} activeOpacity={1}>
           <Icon name="ios-star" color="#f1c40f" size={35}/>
-          <RatingText rating={5.5} />
-          <Text style={styles.total}>12 000</Text>
+          { count && average.length ? (
+              <>
+                <RatingText rating={Number(average[0].avgRating).toFixed(1)} />
+                <Text style={styles.total}>{ count }</Text>
+              </>
+            ) : (
+              <Text style={styles.rateThis}>NO RATES YET</Text>
+            )
+          }
         </TouchableOpacity>
         <TouchableOpacity style={styles.vertical} onPress={handleRatePress}>
           <Icon name="ios-star-outline" color="#fff" size={35}/>
-          <Text style={styles.rateThis}>RATE THIS { userRating.rating }</Text>
+          { !userRating ? (
+              <Text style={styles.rateThis}>RATE THIS</Text>
+            ) : (
+              <>
+                <RatingText rating={userRating} />
+                <Text style={styles.total}>You</Text>
+              </>
+          ) }
         </TouchableOpacity>
       </View>
       <Section title="Actors">
@@ -85,11 +141,33 @@ const FilmDetails = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  watchListText: {
+    fontSize: 15,
+    color: 'white',
+    paddingVertical: 15,
+    marginLeft: 10,
+  },
+  watchListButton: {
+    paddingHorizontal: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#0277BD',
+    borderColor: '#0277BD',
+    borderRadius: 4,
+    margin: 15,
+    flex: 1,
+  },
+  watchListButtonContainer: {
+    ...theme.bottomDivider,
+    backgroundColor: theme.sectionBackground,
+    borderRadius: 4,
+  },
   rateThis: {
     color: 'white',
     fontSize: 13,
     fontWeight: 'bold',
-    marginTop: 2
+    marginTop: 2,
+    textTransform: 'uppercase'
   },
   vertical: {
     flexDirection: 'column',
