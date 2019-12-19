@@ -37,7 +37,6 @@ const FilmDetails = ({ navigation }) => {
 
   const handleWatchlist = useCallback(async () => {
     try {
-      console.log(isInWatchlist)
       if (isInWatchlist) {
         await deleteFromWatchList(id);
       } else {
@@ -56,12 +55,10 @@ const FilmDetails = ({ navigation }) => {
     if (user) {
       setVisible(true);
     } else {
-      navigation.navigate('SignIn', {
-        successLogin: () => {
-
-          console.log(1111111111111111)
-        },
-      });
+      // navigation.navigate('SignIn', {
+      //   successLogin: () => {
+      //   },
+      // });
     }
   }, [user, navigation]);
 

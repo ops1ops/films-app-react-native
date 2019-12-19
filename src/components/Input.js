@@ -35,7 +35,7 @@ class Input extends React.Component {
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
         style={{ ...styles.textInput, ...style}}
-        placeholderTextColor="#fff"
+        placeholderTextColor="#ccc"
         {...otherProps}
       />
     );

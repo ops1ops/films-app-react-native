@@ -95,3 +95,10 @@ export const addToWatchList = async (id) => {
 export const deleteFromWatchList = async (id) => {
   await axios.delete(`${baseApiUrl}/film/${id}/watchlist`);
 };
+
+export const searchRequest = async (query, setLoading, setFilms) => {
+  const { data } = await axios.get(`${baseApiUrl}/search?name=${query}`);
+  console.log(data)
+  setFilms(data);
+  setLoading(false);
+};

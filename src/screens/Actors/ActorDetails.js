@@ -7,8 +7,6 @@ import Section from "../../components/Section";
 import HorizontalFilmsList from "../../components/FilmsList/HorizontalFilmsList";
 import Loader from "../../components/Loader";
 import formatActorByGender from "../../utils/formatActorByGender";
-import HorizontalList from "../../components/HorizontalList";
-import VerticalActorCard from "../../components/VerticalActorCard";
 import ImagesList from "../../components/ImagesList";
 import NumberedText from '../../components/NumberedText';
 import formatDate from '../../utils/formatDate';

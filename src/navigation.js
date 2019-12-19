@@ -12,6 +12,8 @@ import SignIn from "./screens/SignIn";
 import HeaderTitle from './components/HeaderTitle';
 import CinematographWithType from './screens/Films/CinematographWithType';
 import getCinematographTitle from './utils/getCinematographTitle';
+import {View, Text} from "react-native";
+import Search from "./screens/Search";
 
 // TODO: change touch color back button to white
 
@@ -23,6 +25,7 @@ const AppNavigator = createStackNavigator(
     ActorDetails: { screen: ActorDetails, navigationOptions: { title: 'Actor Details'} },
     Profile: { screen: Profile, navigationOptions: { title: 'Profile' } },
     SignIn: { screen: SignIn, navigationOptions: { title: 'Sign In'} },
+    Search: { screen: Search, navigationOptions: { title: 'Search'} },
     All: { screen: CinematographWithType, navigationOptions: ({ navigation }) => ({ title: getCinematographTitle(navigation.getParam('type', ''))}) },
   },
   {
@@ -32,7 +35,12 @@ const AppNavigator = createStackNavigator(
         backgroundColor: '#393939',
       },
       headerTintColor: '#fff',
-      headerRight: () => <UserProfileIcon navigation={navigation} />
+      headerRight: () => (
+        <View>
+          <Text onPress={() => navigation.navigate('Search')}>123</Text>
+          <UserProfileIcon navigation={navigation} />
+        </View>
+      )
     })
 
   }

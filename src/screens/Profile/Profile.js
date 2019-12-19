@@ -10,7 +10,6 @@ import {setUserInfoFromRequest} from "../../api";
 import Loader from "../../components/Loader";
 
 function Profile({ navigation }) {
-  console.log('render')
   const [user, setUser] = useContext(StoreContext);
   const [userInfo, setUserInfo] = useState();
   const [isLoading, setLoading] = useState(false);

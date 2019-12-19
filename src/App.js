@@ -10,7 +10,6 @@ export default () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    console.log("RELOAD ROOT");
     getFromAsyncStorage(userKey, setUser);
   }, []);
 
@@ -18,7 +17,6 @@ export default () => {
     setToAsyncStorage(userKey, user);
   }, [user]);
 
-  console.log("USER", user)
   return (
     <>
       <StoreContext.Provider value={[user, setUser]}>
